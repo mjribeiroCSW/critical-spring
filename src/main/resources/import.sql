@@ -1,0 +1,1 @@
+INSERT INTO CREDIT_CARD (Card_Number, First_Name, Last_Name, Address, Phone_Number, Expire_Date, CVV, Created_Date, Updated_Date) VALUES (1234567890123456, 'John', 'Doe', '123 Main St', '555-1234', '12/25', '123', '2024-01-02', '2024-01-02');
