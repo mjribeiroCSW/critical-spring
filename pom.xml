@@ -86,4 +86,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>integration-test</id>
+		</profile>
+	</profiles>
 </project>
