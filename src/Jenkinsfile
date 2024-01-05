@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh './mvnw clean install'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Your deployment steps here
+                }
+            }
+        }
+    }
+}

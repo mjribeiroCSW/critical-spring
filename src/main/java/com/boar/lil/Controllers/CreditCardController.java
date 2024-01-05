@@ -36,7 +36,7 @@ public class CreditCardController {
             @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
             @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})})
     @GetMapping("/creditcard/{id}")
-    public CreditCard getEmployee(@PathVariable int id) {
+    public CreditCard getCreditCard(@PathVariable int id) {
         return service.Get(id);
     }
 
@@ -45,18 +45,22 @@ public class CreditCardController {
             @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
             @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})})
     @PostMapping("/creditcards")
-    public ResponseEntity<Long> addEmployee(@Valid @RequestBody CreditCard creditCard) {
+    public ResponseEntity<Long> addCreditCard(@Valid @RequestBody CreditCard creditCard) {
         long generatedId = service.Insert(creditCard);
         return new ResponseEntity<>(generatedId, HttpStatus.CREATED);
     }
 
     @PutMapping("/creditcards")
-    public int updateEmployee(@RequestBody int creditCard) {
+    public int updateCreditCard(@RequestBody int creditCard) {
         return service.Update();
     }
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = CreditCard.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
+            @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})})
     @DeleteMapping("/creditcards/{id}")
-    public String deleteEmployee(@PathVariable int id) {
-        return "Deleted credit card with id: " + id;
+    public String deleteCreditCard(@PathVariable int id) {
+        return service.Delete(id);
     }
 }

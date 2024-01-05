@@ -43,6 +43,6 @@ public class CreditCardService implements ICreditCardService
 
     @Override
     public String Delete(int id) {
-        return "Deleted credit card with id: " + id;
+        return "Deleted credit card with id: " + repository.DeleteById(id);
     }
 }

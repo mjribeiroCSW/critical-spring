@@ -1,5 +1,6 @@
 package com.boar.lil.Repositories;
 
+import com.boar.lil.Mappers.MapperCreditCard;
 import com.boar.lil.h2entity.CreditCard;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,7 @@ public class BaseRepository implements IBaseRepository {
              statement.setInt(1, id);
 
              try (ResultSet resultSet = statement.executeQuery()) {
-                 creditCard = mapResultSetToCreditCard(resultSet);
+                 creditCard = MapperCreditCard.mapResultSetToCreditCard(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,16 +75,24 @@ public class BaseRepository implements IBaseRepository {
         return -1;
     }
 
-    private CreditCard mapResultSetToCreditCard(ResultSet resultSet) throws SQLException {
-        var creditCard = new CreditCard();
+    @Override
+    public int DeleteById(int id) {
+        var sql = "DELETE FROM CREDIT_CARD WHERE ID = ?";
 
-        if (!resultSet.next()){
-            return null;
+        try (
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.setInt(1, id);
+            var rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                return id;  // Return the ID if deletion was successful
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        creditCard.id = resultSet.getLong("ID");
-        creditCard.CardNumber = resultSet.getLong("CARD_NUMBER");
-
-        return creditCard;
+        return -1;  // Return -1 if deletion was not successful
     }
 }
