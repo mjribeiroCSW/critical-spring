@@ -2,36 +2,47 @@ pipeline {
     agent any
 
     stages {
+        // checkout de master, based on jenkins configuration
         stage('Checkout') {
             steps {
-                // Checkout your source code from version control
-                // For example, using Git:
                 checkout scm
             }
         }
 
+        // builds the java project
         stage('Build') {
             steps {
-                // Build your Java project
                 sh 'mvn clean install'
             }
         }
 
-        stage('Test') {
+        // runs the unit tests
+        stage('Unit Test') {
             steps {
-                // Run unit tests
                 sh 'mvn test'
             }
 
             post {
                 always {
-                    // Archive test results for visualization in Jenkins
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
         }
 
-        // Add more stages as needed (e.g., deployment, integration tests, etc.)
+        // Run integration tests
+        stage('Integration Test') {
+            steps {
+                sh 'mvn verify -Pintegration-test'
+            }
+
+            post {
+                always {
+                    junit '**/target/failsafe-reports/TEST-*.xml'
+                }
+            }
+        }
+
+        // Add more stages as needed (e.g., deployment, additional tests, etc.)
     }
 
     // Add post actions, notifications, or other global settings if needed
