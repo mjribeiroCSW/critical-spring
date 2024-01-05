@@ -1,10 +1,38 @@
 pipeline {
     agent any
+
     stages {
-        stage('Hello') {
+        stage('Checkout') {
             steps {
-                echo 'Hello World'
+                // Checkout your source code from version control
+                // For example, using Git:
+                checkout scm
             }
         }
+
+        stage('Build') {
+            steps {
+                // Build your Java project
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run unit tests
+                sh 'mvn test'
+            }
+
+            post {
+                always {
+                    // Archive test results for visualization in Jenkins
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
+            }
+        }
+
+        // Add more stages as needed (e.g., deployment, integration tests, etc.)
     }
+
+    // Add post actions, notifications, or other global settings if needed
 }
