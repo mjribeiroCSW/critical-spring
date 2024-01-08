@@ -42,8 +42,14 @@ pipeline {
             }
         }
 
-        // Add more stages as needed (e.g., deployment, additional tests, etc.)
+        stages {
+            stage('Publish') {
+                steps {
+                    script {
+                            sh 'mvn deploy:deploy-file -Durl=https://jcenter.bintray.com -Dfile=target/your-sdk-artifact.jar -DgroupId=com.boar.lil.sdk -DartifactId=your-sdk -Dversion=1.0.0 -Dpackaging=jar'
+                        }
+                    }
+                }
+        }
     }
-
-    // Add post actions, notifications, or other global settings if needed
 }

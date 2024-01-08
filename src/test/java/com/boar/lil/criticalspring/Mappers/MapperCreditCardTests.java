@@ -62,7 +62,6 @@ public class MapperCreditCardTests {
         // Assert
         assertNull(creditCard);
 
-        // Verify that resultSet.next() was called once
         Mockito.verify(resultSet, Mockito.times(1)).next();
     }
 }
