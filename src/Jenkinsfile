@@ -42,14 +42,12 @@ pipeline {
             }
         }
 
-        stages {
-            stage('Publish') {
-                steps {
-                    script {
-                            sh 'mvn deploy:deploy-file -Durl=https://jcenter.bintray.com -Dfile=target/your-sdk-artifact.jar -DgroupId=com.boar.lil.sdk -DartifactId=your-sdk -Dversion=1.0.0 -Dpackaging=jar'
-                        }
-                    }
+        stage('Publish') {
+            steps {
+                script {
+                    sh 'mvn deploy:deploy-file -Durl=https://jcenter.bintray.com -Dfile=target/your-sdk-artifact.jar -DgroupId=com.boar.lil.sdk -DartifactId=your-sdk -Dversion=1.0.0 -Dpackaging=jar'
                 }
+            }
         }
     }
 }

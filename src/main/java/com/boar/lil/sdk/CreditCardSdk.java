@@ -35,28 +35,35 @@ public class CreditCardSdk {
     }
 
     private CompletableFuture<Void> postAsync(String url, Object data, List<HttpHeader> headers) {
-        var future = new CompletableFuture<>();
+        var future = new CompletableFuture<Void>();
 
         try {
             HttpPost request = new HttpPost(url);
             headers.forEach(header -> request.setHeader(header.getName(), header.getValue()));
 
             // object to JSON
-            var objectMapper = new ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper();
             String jsonData = objectMapper.writeValueAsString(data);
 
             StringEntity entity = new StringEntity(jsonData);
             request.setEntity(entity);
 
             httpClient.execute(request, response -> {
-                future.complete(null);
+                var statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode >= 200 && statusCode < 300) {
+                    future.complete(null);
+                }
+                else
+                {
+                    future.completeExceptionally(new RuntimeException("HTTP error code: " + statusCode));
+                }
                 return null;
             });
         } catch (Exception e) {
             future.completeExceptionally(e);
         }
 
-        return null;
+        return future;
     }
 
     // Define a simple representation of HTTP headers
