@@ -79,7 +79,6 @@
 			<artifactId>httpclient5</artifactId>
 			<version>5.2.3</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
@@ -94,6 +93,26 @@
 					<release>17</release> <!-- Set the desired Java version -->
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy-file</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${project.build.finalName}.jar</file>
+							<url>file://${user.home}/.m2/repository</url>
+							<groupId>com.boar.lil.sdk</groupId>
+							<artifactId>your-sdk</artifactId>
+							<version>1.0.0</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -101,4 +120,10 @@
 			<id>integration-test</id>
 		</profile>
 	</profiles>
+	<distributionManagement>
+		<repository>
+			<id>local-repo</id>
+			<url>file://${user.home}/.m2/repository</url>
+		</repository>
+	</distributionManagement>
 </project>
